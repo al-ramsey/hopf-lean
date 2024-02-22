@@ -3,12 +3,6 @@ import Mathlib.Algebra.Ring.Basic
 /-
 In this file, we demonstrate some of the basic tactics in Lean which we will use
 throughout this report.
-
-Basic tactics:
-* aesop
-* ext
-* rfl
-* unfold
 -/
 
 -- let `R` be a ring
