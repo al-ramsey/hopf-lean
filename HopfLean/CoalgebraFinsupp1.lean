@@ -1,9 +1,26 @@
 import Mathlib.RingTheory.TensorProduct
 
+/-
+Notation:
+* `V ⊗[R] W` is the tensor product of `V` and `W` over `R`, with elements finite
+  sums of pure tensors `v ⊗ₜ[R] w`
+* `f : A →ₗ[R] B` is an `R`-linear map from `A` to `B`
+* `f : A →₀ B` is a finitely support function from `A` to `B`
+* `fun₀ | x => 1` is the function which sends `x` to `1` and everything else to `0`
+-/
+
+-- allow local use of ⊗ notation
 open scoped TensorProduct
 
+-- allow us to write 'id' rather than 'LinearMap.id'
 open LinearMap
 
+/-
+We use the canonical isomorphisms:
+* TensorProduct.assoc R U V W : (U ⊗ V) ⊗ W ≅ U ⊗ (V ⊗ W)
+* TensorProduct.lid R V : R ⊗ V ≅ V
+* TensorProduct.rid R V : V ⊗ R ≅ V
+-/
 class Coalgebra (R : Type u) (A : Type v) [CommRing R] [AddCommGroup A] [Module R A] where
   comul : A →ₗ[R] A ⊗[R] A
   counit : A →ₗ[R] R

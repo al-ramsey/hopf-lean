@@ -1,5 +1,11 @@
 import Mathlib.RingTheory.TensorProduct
 
+/-
+Notation:
+* `f ∘ₗ g` is the composition `f ∘ g` of two linear maps `f` and `g`, as a linear map
+  (that is, it is a map, along with the proof that it is linear)
+-/
+
 universe u v
 
 open scoped TensorProduct
