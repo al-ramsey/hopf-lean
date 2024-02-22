@@ -25,15 +25,16 @@ add_assoc.{u_1} {G : Type u_1} [inst✝ : AddSemigroup G] (a b c : G) :
     a + b + c = a + (b + c)
 
 The braces in the statement above denote implicit arguments (arguments that Lean
-can infer), and the brackets denote explicit arguments (which Lean must be given). We
-will explain the square brackets further in the section on algebraic structures in
-Lean
+can infer), and the brackets denote explicit arguments (which Lean must be given in
+general). We will explain the square brackets further in the section on algebraic
+structures in Lean
 -/
 
 theorem add_assoc₁ : ∀ a b c : R, a + (b + c) = (a + b) + c := by
   -- let a, b, c be elements of the ring R
   intros a b c
-  -- we can now use add_assoc, noting that we must provide Lean with the variables
+  -- we can now use add_assoc
+  -- Lean can actually guess the variables here, but we include them for clarity
   rw [add_assoc a b c]
 
 /-
@@ -78,7 +79,7 @@ the arguments you give it in the goal, and then attempts to simplify it. 'simp o
 uses only the theorems/hypotheses you give it to simplify the goal, not everything
 it knows.
 
-We use the axioms of a ring below:
+We use the axioms of a ring in Mathlib below:
 
 right_distrib.{x} {R : Type x} [inst✝ : Mul R] [inst✝¹ : Add R]
     [inst✝² : RightDistribClass R] (a b c : R) : (a + b) * c = a * c + b * c
@@ -105,11 +106,11 @@ theorem add_comm' {R : Type*} [Ring R] (a b : R) : a + b = b + a := by
     simp_rw [left_distrib, right_distrib, mul_one, add_assoc]
   rw [key₁] at key₂
   -- note that Lean can sometimes figure out even explicit arguments on its own,
-  -- but sometimes we need to provide them
+  -- but in general we need to provide them
   apply AddGroup.toAddCancelMonoid.proof_6 (a + b) b
   apply AddGroup.toAddCancelMonoid.proof_1 a
   have key₃ : a + (a + b) + b = a + (a + b + b) := by simp only [add_assoc₂]
-  -- the arrow ← tells Lean to rewrite backwards
+  -- the arrow ← tells Lean to rewrite the left hand side of the equality
   rw [← key₃]
   have key₄ : a + (b + a) + b = a + (b + a + b) := by simp only [add_assoc₂]
   rw [← key₄]
