@@ -1,24 +1,59 @@
 import Mathlib.Algebra.Ring.Basic
 
 /-
+In this file, we demonstrate some of the basic tactics in Lean which we will use
+throughout this report.
+
 Basic tactics:
-* apply
 * aesop
 * ext
 * rfl
 * unfold
-* have
-* simp only
 -/
 
+-- let `R` be a ring
 variable {R : Type*} [Ring R]
+
+/-
+We first try to prove that addition in a ring is associative. Of course, this just
+follows from the basic axioms for a ring, but trivial theorems like this are a good
+way to become familiar with Lean tactics.
+
+Our first proof uses 'intros', which when used on a goal of the form `∀ x, P x`,
+introduces an arbitrary variable `x` and changes the goal to `P x`.
+
+Further, given a theorem `h` of the form `h : x = y` and a goal involving `x`, the
+tactic 'rw [h]' rewrites the goal to involve `y`.
+
+We have available the axiom that in an additive group, addition is associative:
+
+add_assoc.{u_1} {G : Type u_1} [inst✝ : AddSemigroup G] (a b c : G) :
+    a + b + c = a + (b + c)
+
+The braces in the statement above denote implicit arguments (arguments that Lean
+can infer), and the brackets denote explicit arguments (which Lean must be given). We
+will explain the square brackets further in the section on algebraic structures in
+Lean
+-/
 
 theorem add_assoc₁ : ∀ a b c : R, a + (b + c) = (a + b) + c := by
   -- let a, b, c be elements of the ring R
   intros a b c
+  -- we can now use add_assoc, noting that we must provide Lean with the variables
   rw [add_assoc a b c]
 
--- We now tag this theorem with @[simp], which teaches it to the simplifier
+/-
+Given a theorem `h` of the form `h : P x` and a goal which is exactly `P x`, the
+tactic 'exact h' closes the goal.
+
+The tactic symm on a goal of the form `x = y` changes the goal to `y = x`. It works
+on all equivalence relations.
+
+Tagging the theorem with the label @[simp] teaches the simplifier that the theorem
+is true. We can then later use the tactic 'simp', which tries to simplify the goal
+using the theorems it has been taught.
+-/
+
 @[simp]
 theorem add_assoc₂ : ∀ a b c : R, a + (b + c) = (a + b) + c := by
   intros a b c
@@ -32,19 +67,56 @@ theorem add_assoc₃ : ∀ a b c : R, a + (b + c) = (a + b) + c := by
   simp
 
 /-
-We show that the underlying additive group of a ring is necessarily abelian if the
-multiplication distributes over addition
+We now prove something a little less trivial: that the underlying additive group of
+a ring is necessarily abelian if the multiplication distributes over addition. We
+introduce the new tactics 'have', 'simp_rw', 'simp only' and 'apply'.
+
+The tactic 'have key : `P x`' creates a new subgoal `P x`. Once this has been proven,
+we would then have available 'key : `P x`' as a hypothesis, which we could use in
+the main proof. It is essentially introducing a lemma in the middle of a proof, and
+proving that first.
+
+If we have a theorem or hypothesis of the form 'h : `P → Q`' (`P` implies `Q`) and
+our goal is `Q`, we can use 'apply h' to change the goal to `P`.
+
+The tactics 'simp_rw' and 'simp only' are weaker forms of 'simp'. 'simp_rw' rewrites
+the arguments you give it in the goal, and then attempts to simplify it. 'simp only'
+uses only the theorems/hypotheses you give it to simplify the goal, not everything
+it knows.
+
+We use the axioms of a ring below:
+
+right_distrib.{x} {R : Type x} [inst✝ : Mul R] [inst✝¹ : Add R]
+    [inst✝² : RightDistribClass R] (a b c : R) : (a + b) * c = a * c + b * c
+
+left_distrib.{x} {R : Type x} [inst✝ : Mul R] [inst✝¹ : Add R]
+    [inst✝² : LeftDistribClass R] (a b c : R) : a * (b + c) = a * b + a * c
+
+mul_one.{u} {M : Type u} [inst✝ : MulOneClass M] (a : M) : a * 1 = a
+
+Along with the theorems that tell us we can left and right cancel:
+
+AddGroup.toAddCancelMonoid.proof_6.{u_1} {G : Type u_1} [inst✝ : AddGroup G]
+    (a b c : G) (h : a + b = c + b) : a = c
+
+AddGroup.toAddCancelMonoid.proof_1.{u_1} {G : Type u_1} [inst✝ : AddGroup G]
+    (a b c : G) (h : a + b = a + c) : b = c
 -/
 theorem add_comm' {R : Type*} [Ring R] (a b : R) : a + b = b + a := by
   have key₁ : (a + b) * (1 + 1) = a + (a + b) + b := by
+    -- We use simp_rw below because it respects the order of the arguments,
+    -- unlike simp and simp only
     simp_rw [right_distrib, left_distrib, mul_one, add_assoc]
   have key₂ : (a + b) * (1 + 1) = a + (b + a) + b := by
     simp_rw [left_distrib, right_distrib, mul_one, add_assoc]
   rw [key₁] at key₂
+  -- note that Lean can sometimes figure out even explicit arguments on its own,
+  -- but sometimes we need to provide them
   apply AddGroup.toAddCancelMonoid.proof_6 (a + b) b
   apply AddGroup.toAddCancelMonoid.proof_1 a
-  have key₃ : a + (a + b) + b = a + (a + b + b) := by simp
+  have key₃ : a + (a + b) + b = a + (a + b + b) := by simp only [add_assoc₂]
+  -- the arrow ← tells Lean to rewrite backwards
   rw [← key₃]
-  have key₄ : a + (b + a) + b = a + (b + a + b) := by simp
+  have key₄ : a + (b + a) + b = a + (b + a + b) := by simp only [add_assoc₂]
   rw [← key₄]
   exact key₂
