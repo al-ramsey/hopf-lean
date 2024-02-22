@@ -27,7 +27,7 @@ add_assoc.{u_1} {G : Type u_1} [inst✝ : AddSemigroup G] (a b c : G) :
 The braces in the statement above denote implicit arguments (arguments that Lean
 can infer), and the brackets denote explicit arguments (which Lean must be given in
 general). We will explain the square brackets further in the section on algebraic
-structures in Lean
+structures in Lean.
 -/
 
 theorem add_assoc₁ : ∀ a b c : R, a + (b + c) = (a + b) + c := by
@@ -66,13 +66,14 @@ We now prove something a little less trivial: that the underlying additive group
 a ring is necessarily abelian if the multiplication distributes over addition. We
 introduce the new tactics 'have', 'simp_rw', 'simp only' and 'apply'.
 
-The tactic 'have key : `P x`' creates a new subgoal `P x`. Once this has been proven,
-we would then have available 'key : `P x`' as a hypothesis, which we could use in
-the main proof. It is essentially introducing a lemma in the middle of a proof, and
-proving that first.
+The tactic 'have key : `P x`' creates a new subgoal `P x`. Once this has been
+proven, we would then have available 'key : `P x`' as a hypothesis, which we could
+use in the main proof. It is essentially introducing a lemma in the middle of a
+proof, and proving that first.
 
-If we have a theorem or hypothesis of the form 'h : `P → Q`' (`P` implies `Q`) and
-our goal is `Q`, we can use 'apply h' to change the goal to `P`.
+If we have a theorem or hypothesis of the form 'h : `P → Q`' (`P` implies `Q`,
+literally 'h is a function which takes a proof of `P` to a proof of `Q`') and our
+goal is `Q`, we can use 'apply h' to change the goal to `P`.
 
 The tactics 'simp_rw' and 'simp only' are weaker forms of 'simp'. 'simp_rw' rewrites
 the arguments you give it in the goal, and then attempts to simplify it. 'simp only'
