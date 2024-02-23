@@ -19,11 +19,11 @@ namespace Group₁
 variable {G : Type u} [Group₁ G]
 
 -- the identity of a group is unique
-theorem e_unique_group₁ (e₁ e₂ : G) (e₁_mul : ∀ x : G, mul e₁ x = x) (mul_e₂ : ∀ x : G, mul x e₂ = x) :
-    e₁ = e₂ := by
+theorem e_unique_group₁ (e' : G) (mul_e' : ∀ x : G, mul x e' = x) :
+    e = e' := by
   calc
-    e₁ = mul e₁ e₂ := by rw [mul_e₂ e₁]
-    _  = e₂ := e₁_mul e₂
+    e = mul e e' := by rw [mul_e' e]
+    _  = e' := e_mul e'
 
 -- the left and right inverses of an element coincide
 theorem left_inv_eq_right_inv_group₁ (x a b : G) (a_right_inv : mul x a = e) (b_left_inv : mul b x = e) :
@@ -48,11 +48,11 @@ namespace Monoid₁
 variable {M : Type u} [Monoid₁ M]
 
 -- the identity of a monoid is unique (note that the proof is exactly the same as for groups)
-theorem e_unique_monoid₁ (e₁ e₂ : M) (e₁_mul : ∀ x : M, mul e₁ x = x) (mul_e₂ : ∀ x : M, mul x e₂ = x) :
-    e₁ = e₂ := by
+theorem e_unique_monoid₁ (e' : M) (mul_e' : ∀ x : M, mul x e' = x) :
+    e = e' := by
   calc
-    e₁ = mul e₁ e₂ := by rw [mul_e₂ e₁]
-    _ = e₂ := e₁_mul e₂
+    e = mul e e' := by rw [mul_e' e]
+    _ = e' := e_mul e'
 
 -- the left and right inverses of an element coincide if they exist
 -- (the same proof as for groups, again)
@@ -82,11 +82,11 @@ We can therefore just give Lean the name of the corresponding lemma for monoids 
 -/
 
 -- the identity of a group is unique
-theorem e_unique_group₂ (e₁ e₂ : G) (e₁_mul : ∀ x : G, mul e₁ x = x) (mul_e₂ : ∀ x : G, mul x e₂ = x) :
-    e₁ = e₂ := e_unique_monoid₁ _ _ e₁_mul mul_e₂
+theorem e_unique_group₂ (e' : G) (mul_e' : ∀ x : G, mul x e' = x) :
+    e = e' := e_unique_monoid₁ _ mul_e'
 
 -- the left and right inverses of an element coincide
-theorem left_inv_eq_right_inv₃ (x a b : G) (a_right_inv : mul x a = e) (b_left_inv : mul b x = e) :
+theorem left_inv_eq_right_inv_group₂ (x a b : G) (a_right_inv : mul x a = e) (b_left_inv : mul b x = e) :
     a = b := left_inv_eq_right_inv_monoid₁ _ _ _ a_right_inv b_left_inv
 
 end Group₂
@@ -124,5 +124,5 @@ namespace Group₃
 variable {G : Type u} [Group₃ G]
 
 -- the identity of a group is unique
-theorem e_unique_group₃ (e₁ e₂ : G) (e₁_mul : ∀ x : G, mul e₁ x = x) (mul_e₂ : ∀ x : G, mul x e₂ = x) :
-    e₁ = e₂ := e_unique_semigroup _ _ e₁_mul mul_e₂
+theorem e_unique_group₃ (e' : G) (mul_e' : ∀ x : G, mul x e' = x) :
+    e = e' := e_unique_semigroup _ _ e_mul mul_e'
