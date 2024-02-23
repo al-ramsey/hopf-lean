@@ -19,14 +19,14 @@ namespace Group₁
 variable {G : Type u} [Group₁ G]
 
 -- the identity of a group is unique
-theorem e_unique (e₁ e₂ : G) (e₁_mul : ∀ x : G, mul e₁ x = x) (mul_e₂ : ∀ x : G, mul x e₂ = x) :
+theorem e_unique_group₁ (e₁ e₂ : G) (e₁_mul : ∀ x : G, mul e₁ x = x) (mul_e₂ : ∀ x : G, mul x e₂ = x) :
     e₁ = e₂ := by
   calc
     e₁ = mul e₁ e₂ := by rw [mul_e₂ e₁]
     _  = e₂ := e₁_mul e₂
 
 -- the left and right inverses of an element coincide
-theorem left_inv_eq_right_inv (x a b : G) (a_right_inv : mul x a = e) (b_left_inv : mul b x = e) :
+theorem left_inv_eq_right_inv_group₁ (x a b : G) (a_right_inv : mul x a = e) (b_left_inv : mul b x = e) :
     a = b := by
   calc
     a = mul e a := by rw [e_mul a]
@@ -37,25 +37,26 @@ theorem left_inv_eq_right_inv (x a b : G) (a_right_inv : mul x a = e) (b_left_in
 
 end Group₁
 
-class Monoid (M : Type u) where
+class Monoid₁ (M : Type u) where
   mul : M → M → M
   e : M
   e_mul : ∀ x : M, mul e x = x
   mul_e : ∀ x : M, mul x e = x
   mul_assoc : ∀ x y z : M, mul x (mul y z) = mul (mul x y) z
 
-namespace Monoid
-variable {M : Type u} [Monoid M]
+namespace Monoid₁
+variable {M : Type u} [Monoid₁ M]
 
 -- the identity of a monoid is unique (note that the proof is exactly the same as for groups)
-theorem e_unique (e₁ e₂ : M) (e₁_mul : ∀ x : M, mul e₁ x = x) (mul_e₂ : ∀ x : M, mul x e₂ = x) :
+theorem e_unique_monoid₁ (e₁ e₂ : M) (e₁_mul : ∀ x : M, mul e₁ x = x) (mul_e₂ : ∀ x : M, mul x e₂ = x) :
     e₁ = e₂ := by
   calc
     e₁ = mul e₁ e₂ := by rw [mul_e₂ e₁]
     _ = e₂ := e₁_mul e₂
 
--- the left and right inverses of an element coincide (the same proof as for groups, again)
-theorem left_inv_eq_right_inv (x a b : M) (a_right_inv : mul x a = e) (b_left_inv : mul b x = e) :
+-- the left and right inverses of an element coincide if they exist
+-- (the same proof as for groups, again)
+theorem left_inv_eq_right_inv_monoid₁ (x a b : M) (a_right_inv : mul x a = e) (b_left_inv : mul b x = e) :
     a = b := by
   calc
     a = mul e a := by rw [e_mul a]
@@ -64,16 +65,16 @@ theorem left_inv_eq_right_inv (x a b : M) (a_right_inv : mul x a = e) (b_left_in
     _ = mul b e := by rw [a_right_inv]
     _ = b := mul_e b
 
-end Monoid
+end Monoid₁
 
-class Group₂ (G : Type u) extends Monoid G where
+class Group₂ (G : Type u) extends Monoid₁ G where
   left_inv : ∀ x : G, ∃ y : G, mul y x = e
   right_inv : ∀ x : G, ∃ y : G, mul x y = e
 
 namespace Group₂
 variable (G : Type u) [Group₂ G]
 
-open Monoid
+open Monoid₁
 
 /-
 We have already proven the lemmas below for monoids, so we know they must be true for groups.
@@ -81,11 +82,47 @@ We can therefore just give Lean the name of the corresponding lemma for monoids 
 -/
 
 -- the identity of a group is unique
-theorem e_unique' (e₁ e₂ : G) (e₁_mul : ∀ x : G, mul e₁ x = x) (mul_e₂ : ∀ x : G, mul x e₂ = x) :
-    e₁ = e₂ := e_unique _ _ e₁_mul mul_e₂
+theorem e_unique_group₂ (e₁ e₂ : G) (e₁_mul : ∀ x : G, mul e₁ x = x) (mul_e₂ : ∀ x : G, mul x e₂ = x) :
+    e₁ = e₂ := e_unique_monoid₁ _ _ e₁_mul mul_e₂
 
 -- the left and right inverses of an element coincide
-theorem left_inv_eq_right_inv' (x a b : G) (a_right_inv : mul x a = e) (b_left_inv : mul b x = e) :
-    a = b := left_inv_eq_right_inv _ _ _ a_right_inv b_left_inv
+theorem left_inv_eq_right_inv₃ (x a b : G) (a_right_inv : mul x a = e) (b_left_inv : mul b x = e) :
+    a = b := left_inv_eq_right_inv_monoid₁ _ _ _ a_right_inv b_left_inv
 
 end Group₂
+
+class SemiGroup (S : Type u) where
+  mul : S → S → S
+  mul_assoc : ∀ x y z : S, mul x (mul y z) = mul (mul x y) z
+
+namespace SemiGroup
+variable {S : Type u} [SemiGroup S]
+
+-- the identity of a semigroup is unique if it exists
+theorem e_unique_semigroup (e₁ e₂ : S) (e₁_mul : ∀ x : S, mul e₁ x = x) (mul_e₂ : ∀ x : S, mul x e₂ = x) :
+    e₁ = e₂ := by
+  calc
+    e₁ = mul e₁ e₂ := by rw [mul_e₂ e₁]
+    _ = e₂ := e₁_mul e₂
+
+end SemiGroup
+
+class Monoid₂ (M : Type u) extends SemiGroup M where
+  e : M
+  e_mul : ∀ x : M, mul e x = x
+  mul_e : ∀ x : M, mul x e = x
+
+class Group₃ (G : Type u) extends Monoid₂ G where
+  left_inv : ∀ x : G, ∃ y : G, mul y x = e
+  right_inv : ∀ x : G, ∃ y : G, mul x y = e
+
+open SemiGroup
+
+open Monoid₂
+
+namespace Group₃
+variable {G : Type u} [Group₃ G]
+
+-- the identity of a group is unique
+theorem e_unique_group₃ (e₁ e₂ : G) (e₁_mul : ∀ x : G, mul e₁ x = x) (mul_e₂ : ∀ x : G, mul x e₂ = x) :
+    e₁ = e₂ := e_unique_semigroup _ _ e₁_mul mul_e₂
