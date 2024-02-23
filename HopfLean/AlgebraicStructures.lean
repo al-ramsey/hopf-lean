@@ -14,9 +14,26 @@ class Group₁ (G : Type u) where
   -- the binary product is associative
   mul_assoc : ∀ x y z : G, mul x (mul y z) = mul (mul x y) z
 
+/-
+Any lemma `h` in the namespace below must be referred to as `Group₁.h` outside of the namespace.
+Namespaces allow us to repeat names of axioms and theorems (e.g. 'mul_assoc') for different structures,
+whilst still giving them unique identifiers.
+-/
 namespace Group₁
--- let G be a group
+/-
+The code below can be read as "let `G` be a group".
+variable {G : Type u} introduces the variable `G` (and gives it an arbitrary type), and [Group₁ G]
+tells Lean to construct an instance of a group `G` (as defined in Group₁).
+-/
 variable {G : Type u} [Group₁ G]
+
+/-
+In the lemmas below, we heavily use the tactic 'calc', which tells Lean that we are about to
+construct a chain of equalities, starting from one side of the goal and ending on the other. This
+tactic allows us to set out proofs in a more readable and intuitive way. It also works on inequalities,
+or any other transitive relation (but we will not need to use it for anything other than equalities in
+this report).
+-/
 
 -- the identity of a group is unique
 theorem e_unique_group₁ (e' : G) (mul_e' : ∀ x : G, mul x e' = x) :
@@ -122,6 +139,11 @@ open Monoid₂
 
 namespace Group₃
 variable {G : Type u} [Group₃ G]
+
+/-
+We have shown that the identity of a semigroup is unique if it exists. Since the identity of a group
+always exists, and a group is a special semigroup, we can just feed Lean the proof for semigroups.
+-/
 
 -- the identity of a group is unique
 theorem e_unique_group₃ (e' : G) (mul_e' : ∀ x : G, mul x e' = x) :
