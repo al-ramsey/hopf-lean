@@ -62,6 +62,22 @@ def Finsupp'.Coalgebra (R : Type u) (S : Type v) [CommRing R] : Coalgebra R (S �
   comul := Finsupp.total S ((S →₀ R) ⊗[R] (S →₀ R)) R (fun s ↦ Finsupp.single s 1 ⊗ₜ Finsupp.single s 1)
   counit := Finsupp.total S R R (fun _ ↦ 1)
   coassoc := by
+    -- expand Finsupp.total into a finite sum
+    intros b; rw [Finsupp.total_apply R b]
+    -- move the summation symbol with a series of rewrites
+    simp_rw [map_finsupp_sum]; simp
+  counit_id := by
+    intros b; rw [Finsupp.total_apply R b]
+    simp_rw [map_finsupp_sum]; simp
+  id_counit := by
+    intros b; rw [Finsupp.total_apply R b]
+    simp_rw [map_finsupp_sum]; simp
+
+noncomputable
+def Finsupp''.Coalgebra (R : Type u) (S : Type v) [CommRing R] : Coalgebra R (S →₀ R) where
+  comul := Finsupp.total S ((S →₀ R) ⊗[R] (S →₀ R)) R (fun s ↦ Finsupp.single s 1 ⊗ₜ Finsupp.single s 1)
+  counit := Finsupp.total S R R (fun _ ↦ 1)
+  coassoc := by
     intro b
     apply Finsupp.induction_linear b <;> aesop
   counit_id := by
