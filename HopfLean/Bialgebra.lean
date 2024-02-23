@@ -1,4 +1,9 @@
-import Mathlib.RingTheory.Coalgebra
+--import Mathlib.RingTheory.Coalgebra
+import HopfLean.Coalgebra
+/-
+Uncommenting the Mathlib coalgebra import and commenting out the HopfLean import will also work, we use the
+HopfLean.coalgebra file only for clarity (the Mathlib file has some extra pieces we don't need)
+-/
 import Mathlib.RingTheory.TensorProduct
 
 /-!
