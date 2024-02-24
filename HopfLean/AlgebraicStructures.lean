@@ -44,7 +44,7 @@ theorem e_unique_group₁ (e' : G) (mul_e' : ∀ x : G, x ⋆ e' = x) :
     e = e' := by
   calc
     e = e ⋆ e' := by rw [mul_e' e]
-    _  = e' := e_mul e'
+    _ = e' := e_mul e'
 
 -- the left and right inverses of an element coincide
 theorem left_inv_eq_right_inv_group₁ (x a b : G) (a_right_inv : x ⋆ a = e)
@@ -138,7 +138,7 @@ theorem e_unique_semigroup (e₁ e₂ : S) (e₁_mul : ∀ x : S, e₁ ⋆ x = x
     (mul_e₂ : ∀ x : S, x ⋆ e₂ = x) : e₁ = e₂ := by
   calc
     e₁ = e₁ ⋆ e₂ := by rw [mul_e₂ e₁]
-    _ = e₂ := e₁_mul e₂
+    _  = e₂ := e₁_mul e₂
 
 end SemiGroup
 
