@@ -96,13 +96,13 @@ a tensor product. For example, if our proposition is of the form
 * If `P` is true for two arbitrary elements of `M ⊗[F] N`, then it is true for
   their sum
 
-The tactic 'refine' is a generalisation of 'exact', where we allow placeholders '?_'
-for proof terms. Lean then creates subgoals corresponding to the proof terms we
-didn't provide.
-
 This works because elements of `M ⊗[F] N` are exactly finite sums of pure tensors.
 In both cases below (but especially the first), we see that Lean's automation (simp
 and aesop) is very good at taking care of these partial goals.
+
+The tactic 'refine' is a generalisation of 'exact', where we allow placeholders '?_'
+for proof terms. Lean then creates subgoals corresponding to the proof terms we
+didn't provide.
 -/
 
 -- `1 • a = a`
