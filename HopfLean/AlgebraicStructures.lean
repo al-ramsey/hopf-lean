@@ -14,7 +14,7 @@ class Group₁ (G : Type u) where
   -- the binary product is associative
   mul_assoc : ∀ x y z : G, mul x (mul y z) = mul (mul x y) z
 
--- define a • b := mul a b for ease of reading
+-- define a ⋆ b := mul a b for ease of reading
 infixl:65   " ⋆ " => Group₁.mul
 
 /-
