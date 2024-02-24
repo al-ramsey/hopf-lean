@@ -8,12 +8,13 @@ universe u v
 open scoped TensorProduct
 
 /-
-This section mirrors Mathlib.RingTheory.TensorProduct, lines 197-231 and 300-301, where some of the
-structure of the tensor product of algebras is built.
+This section mirrors Mathlib.RingTheory.TensorProduct, lines 197-231 and 300-301,
+where some of the structure of the tensor product of algebras is built.
 
-Note that the bialgebra is labelled `Q` below, whilst `B` is technically the underlying ring. When talking
-about the bialgebra, we will normally refer to it as `B` with the understanding that we are also including
-the extra structure, but Lean does not allow for this.
+Note that the bialgebra is labelled `Q` below, whilst `B` is technically the
+underlying ring. When talking about the bialgebra, we will normally refer to it as
+`B` with the understanding that we are also including the extra structure, but Lean
+does not allow for this.
 -/
 
 section Bmul
@@ -43,11 +44,13 @@ open TensorProduct
 
 /-
 Scalar multiplication by `B ⊗ B` on `M ⊗ N` as an `F`-bilinear map, extended (using
-TensorProduct.lift) from BmulAux, the scalar multiplication defined only on pure tensors.
+TensorProduct.lift) from BmulAux, the scalar multiplication defined only on pure
+tensors.
 
-LinearMap.mk₂, the constructor for bilinear maps, requires four proofs (two for linearity in each entry).
-Recall that a proof of the form `∀ x, P x` in Lean is a map sending `x` to a proof of `P x`, and thus a
-constructor requiring `(∀ x, P x)` will accept `(fun x => P x)`, which is what we do here.
+LinearMap.mk₂, the constructor for bilinear maps, requires four proofs (two for
+linearity in each entry). Recall that a proof of the form `∀ x, P x` in Lean is a
+map sending `x` to a proof of `P x`, and thus a constructor requiring `(∀ x, P x)`
+will accept `(fun x => P x)`, which is what we do here.
 -/
 noncomputable
 def Bmul : B ⊗[F] B →ₗ[F] M ⊗[F] N →ₗ[F] M ⊗[F] N :=
@@ -78,19 +81,20 @@ theorem Bmul_apply (b₁ b₂ : B) (m : M) (n : N) :
   rfl
 
 /-
-The simp lemmas below are needed for the instance of `M ⊗ N` as a `B`-module, for two `B`-modules
-`M` and `N`.
+The simp lemmas below are needed for the instance of `M ⊗ N` as a `B`-module, for
+two `B`-modules `M` and `N`.
 
-The tactic for proving both lemmas below is using induction on arbitary elements of a tensor product.
-For example, if our proposition is of the form `∀ a : M ⊗[F] N, P a`, inducting on `a` means we
-only have to show the following:
+The tactic for proving both lemmas below is using induction on arbitary elements of
+a tensor product. For example, if our proposition is of the form
+`∀ a : M ⊗[F] N, P a`, inducting on `a` means we only have to show the following:
 * `P` is true for `0`
 * `P` is true for an arbitrary pure tensor
-* If `P` is true for two arbitrary elements of `M ⊗[F] N`, then it is true for their sum
+* If `P` is true for two arbitrary elements of `M ⊗[F] N`, then it is true for
+  their sum
 
-This works because elements of `M ⊗[F] N` are exactly finite sums of pure tensors. In both cases
-below (but especially the first), we see that Lean's automation (simp and aesop) is very good at
-taking care of these partial goals.
+This works because elements of `M ⊗[F] N` are exactly finite sums of pure tensors.
+In both cases below (but especially the first), we see that Lean's automation (simp
+and aesop) is very good at taking care of these partial goals.
 -/
 
 -- `1 • a = a`
@@ -126,16 +130,17 @@ variable (M N : ModuleCat B) [Module R M] [Module R N] [IsScalarTower R B M] [Is
 open TensorProduct
 
 /-
-This section is set up so that the instance of the monoidal category `B`-Mod can be immediately
-constructed below, though we do not include this here.
+This section is set up so that the instance of the monoidal category `B`-Mod can be
+immediately constructed below, though we do not include this here.
 
-Given a bialgebra `B` and two `B`-modules `M`, `N`, their tensor product `M ⊗ N` is also a
-`B`-module, with action given by `b • (m ⊗ n) := Δ(b) • (m ⊗ n)`
+Given a bialgebra `B` and two `B`-modules `M`, `N`, their tensor product `M ⊗ N` is
+also a `B`-module, with action given by `b • (m ⊗ n) := Δ(b) • (m ⊗ n)`
 
-There are other instances of `M ⊗ N` as a `B`-module, e.g. setting `b • (m ⊗ n)` = `(b • m) ⊗ n`
-or `b • (m ⊗ n) = m ⊗ (b • n)`. Clearly neither of those is what we would want if we want to
-build the instance of the monoidal category `B`-Mod later, so we may need to set the 'canonical'
-instance at a higher priority so that Lean can find it.
+There are other instances of `M ⊗ N` as a `B`-module, e.g. setting
+`b • (m ⊗ n)` = `(b • m) ⊗ n` or `b • (m ⊗ n) = m ⊗ (b • n)`. Clearly neither of
+those is what we would want if we want to build the instance of the monoidal category
+`B`-Mod later, so we may need to set the 'canonical' instance at a higher priority
+so that Lean can find it.
 -/
 
 @[default_instance 200]
@@ -145,10 +150,10 @@ instance tprod_BModule : Module B (M ⊗[R] N) where
   -- which is why we proved them earlier.
   one_smul := by
     intros a; unfold instHSMul SMul.smul
-    simp only [LinearMap.coe_comp, Function.comp_apply, Bialgebra.comul_unit_apply, Bmul_one]
+    simp only [LinearMap.coe_comp, Function.comp_apply, Bialgebra.comul_one, Bmul_one]
   mul_smul := by
     intros b₁ b₂ a; unfold instHSMul SMul.smul
-    simp only [LinearMap.coe_comp, Function.comp_apply, Bialgebra.comul_mul_apply, Bmul_mul]
+    simp only [LinearMap.coe_comp, Function.comp_apply, Bialgebra.comul_mul, Bmul_mul]
   smul_zero := by
     intros b; unfold instHSMul SMul.smul
     simp only [LinearMap.coe_comp, Function.comp_apply, map_zero]

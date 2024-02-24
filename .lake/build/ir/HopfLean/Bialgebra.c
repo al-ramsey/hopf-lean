@@ -1,6 +1,6 @@
 // Lean compiler output
 // Module: HopfLean.Bialgebra
-// Imports: Init Mathlib.RingTheory.Coalgebra Mathlib.RingTheory.TensorProduct
+// Imports: Init HopfLean.Coalgebra Mathlib.RingTheory.TensorProduct
 #include <lean/lean.h>
 #if defined(__clang__)
 #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -14,7 +14,7 @@
 extern "C" {
 #endif
 lean_object* initialize_Init(uint8_t builtin, lean_object*);
-lean_object* initialize_Mathlib_RingTheory_Coalgebra(uint8_t builtin, lean_object*);
+lean_object* initialize_HopfLean_Coalgebra(uint8_t builtin, lean_object*);
 lean_object* initialize_Mathlib_RingTheory_TensorProduct(uint8_t builtin, lean_object*);
 static bool _G_initialized = false;
 LEAN_EXPORT lean_object* initialize_HopfLean_Bialgebra(uint8_t builtin, lean_object* w) {
@@ -24,7 +24,7 @@ _G_initialized = true;
 res = initialize_Init(builtin, lean_io_mk_world());
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Mathlib_RingTheory_Coalgebra(builtin, lean_io_mk_world());
+res = initialize_HopfLean_Coalgebra(builtin, lean_io_mk_world());
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = initialize_Mathlib_RingTheory_TensorProduct(builtin, lean_io_mk_world());

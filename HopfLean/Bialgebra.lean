@@ -21,14 +21,16 @@ universe u v
 
 open scoped TensorProduct
 
-/-- A bialgebra over a commutative (semi)ring `R` is both an algebra and a coalgebra over `R`, such
-that the counit and comultiplication are algebra morphisms. -/
-class Bialgebra (R : Type u) (A : Type v) [CommSemiring R] [Semiring A] extends Algebra R A, Coalgebra R A where
+/-- A bialgebra over a commutative (semi)ring `R` is both an algebra and a coalgebra
+over `R`, such that the counit and comultiplication are algebra morphisms. -/
+class Bialgebra (R : Type u) (A : Type v) [CommSemiring R] [Semiring A] extends
+    Algebra R A, Coalgebra R A where
   /-- The counit is an algebra morphism -/
   counit_mul : ∀ a₁ a₂ : A, counit (a₁ * a₂) = counit a₁ * counit a₂
   counit_one : counit 1 = 1
   /-- The comultiplication is an algebra morphism -/
-  comul_mul : ∀ a₁ a₂ : A, comul (a₁ * a₂) = Algebra.TensorProduct.mul (comul a₁) (comul a₂)
+  comul_mul : ∀ a₁ a₂ : A, comul (a₁ * a₂) =
+      Algebra.TensorProduct.mul (comul a₁) (comul a₂)
   comul_one : comul 1 = 1
 
 namespace Bialgebra
