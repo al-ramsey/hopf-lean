@@ -92,6 +92,10 @@ theorem left_inv_eq_right_inv_monoid₁ (x a b : M) (a_right_inv : x ⋆ a = e)
 
 end Monoid₁
 
+/-
+The 'extends' keyword tells Lean that an instance of Group₂ is an instance of
+Monoid₁, satisfying the extra conditions below.
+-/
 class Group₂ (G : Type u) extends Monoid₁ G where
   left_inv : ∀ x : G, ∃ y : G, y ⋆ x = e
   right_inv : ∀ x : G, ∃ y : G, x ⋆ y = e
