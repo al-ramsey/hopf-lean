@@ -150,9 +150,9 @@ also a `B`-module, with action given by `b • (m ⊗ n) := Δ(b) • (m ⊗ n)`
 
 There are other instances of `M ⊗ N` as a `B`-module, e.g. setting
 `b • (m ⊗ n)` = `(b • m) ⊗ n` or `b • (m ⊗ n) = m ⊗ (b • n)`. Clearly neither of
-those is what we would want if we want to build the instance of the monoidal category
-`B`-Mod later, so we may need to set the 'canonical' instance at a higher priority
-so that Lean can find it.
+those is what we would want if we want to build the instance of the monoidal
+category `B`-Mod later, so we may need to set the 'canonical' instance at a higher
+priority so that Lean can find it.
 -/
 
 @[default_instance 200]

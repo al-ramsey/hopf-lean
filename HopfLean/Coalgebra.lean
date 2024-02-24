@@ -92,12 +92,12 @@ variable (ι : Type v)
 
 /-- The `R`-module whose elements are functions `ι → R` which are zero on all but
 finitely many elements of `ι` has a coalgebra structure. The coproduct `Δ` is given
-by `Δ(fᵢ) = fᵢ ⊗ fᵢ` and the counit `ε` by `ε(fᵢ) =  1`, where `fᵢ` is the function
-sending `i` to `1` and all other elements of `ι` to zero. -/
+by `Δ(fᵢ) = fᵢ ⊗ fᵢ` and the counit `ε` by `ε(fᵢ) =  1`, where `fᵢ` is the
+function sending `i` to `1` and all other elements of `ι` to zero. -/
 noncomputable
 instance instCoalgebra : Coalgebra R (ι →₀ R) where
-  comul :=
-    Finsupp.total ι ((ι →₀ R) ⊗[R] (ι →₀ R)) R (fun i ↦ .single i 1 ⊗ₜ .single i 1)
+  comul := Finsupp.total ι ((ι →₀ R) ⊗[R] (ι →₀ R)) R
+    (fun i ↦ .single i 1 ⊗ₜ .single i 1)
   counit := Finsupp.total ι R R (fun _ ↦ 1)
   coassoc := by ext; simp
   rTensor_counit_comp_comul := by ext; simp

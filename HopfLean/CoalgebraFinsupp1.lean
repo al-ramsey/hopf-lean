@@ -36,11 +36,11 @@ class Coalgebra (R : Type u) (A : Type v) [CommRing R] [AddCommGroup A]
 
 /-
 We use the definitions from Mathlib.LinearAlgebra.Finsupp:
-* Finsupp.total α M R f : takes a function `f : α → M` defined on elements of `α` and
-  extends it to an `R`-linear map `g : (α →₀ R) → M`. We use this so that we can
-  define the comultiplication just on basis elements.
-* Finsupp.single a b : the finitely supported function which takes value `b` at `a`,
-  and `0` otherwise.
+* Finsupp.total α M R f : takes a function `f : α → M` defined on elements of `α`
+  and extends it to an `R`-linear map `g : (α →₀ R) → M`. We use this so that we
+  can define the comultiplication just on basis elements.
+* Finsupp.single a b : the finitely supported function which takes value `b` at
+  `a`, and `0` otherwise.
 -/
 noncomputable
 def Finsupp.Coalgebra (R : Type u) (S : Type v) [CommRing R] :
