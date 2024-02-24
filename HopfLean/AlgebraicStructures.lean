@@ -55,6 +55,7 @@ theorem left_inv_eq_right_inv_group₁ (x a b : G) (a_right_inv : x • a = e) (
     _ = b • e := by rw [a_right_inv]
     _ = b := mul_e b
 
+-- close the namespace
 end Group₁
 
 class Monoid₁ (M : Type u) where
