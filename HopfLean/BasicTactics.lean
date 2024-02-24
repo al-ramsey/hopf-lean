@@ -52,7 +52,7 @@ using the theorems it has been taught.
 @[simp]
 theorem add_assoc₂ : ∀ a b c : R, a + (b + c) = (a + b) + c := by
   intros a b c
-  -- swap the goal from a + (b + c) = (a + b) + c
+  -- swap the goal from `a + (b + c) = (a + b) + c` to `(a + b) + c = a + (b + c)`
   symm
   -- this is now exactly associativity of the underlying additive group
   exact add_assoc a b c
@@ -75,10 +75,12 @@ If we have a theorem or hypothesis of the form 'h : `P → Q`' (`P` implies `Q`,
 literally 'h is a function which takes a proof of `P` to a proof of `Q`') and our
 goal is `Q`, we can use 'apply h' to change the goal to `P`.
 
-The tactics 'simp_rw' and 'simp only' are weaker forms of 'simp'. 'simp_rw' rewrites
-the arguments you give it in the goal, and then attempts to simplify it. 'simp only'
-uses only the theorems/hypotheses you give it to simplify the goal, not everything
-it knows.
+The tactics 'simp_rw' and 'simp only' are weaker forms of 'simp'. 'simp_rw' attempts
+to simplify the goal by rewriting the arguments you give it. 'simp only' uses only
+the theorems/hypotheses you give it to simplify the goal, not everything it knows.
+We will see below why one might choose to use 'simp_rw' over 'simp', and later (in
+the section on monoidal categories) we will see why it can be better to use 'simp
+only' rather than 'simp'.
 
 We use the axioms of a ring in Mathlib below:
 

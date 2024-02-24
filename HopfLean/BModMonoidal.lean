@@ -84,13 +84,17 @@ theorem Bmul_apply (b₁ b₂ : B) (m : M) (n : N) :
 The simp lemmas below are needed for the instance of `M ⊗ N` as a `B`-module, for
 two `B`-modules `M` and `N`.
 
-The tactic for proving both lemmas below is using induction on arbitary elements of
+The method we use for proving both lemmas below is induction on arbitary elements of
 a tensor product. For example, if our proposition is of the form
 `∀ a : M ⊗[F] N, P a`, inducting on `a` means we only have to show the following:
 * `P` is true for `0`
 * `P` is true for an arbitrary pure tensor
 * If `P` is true for two arbitrary elements of `M ⊗[F] N`, then it is true for
   their sum
+
+The tactic 'refine' is a generalisation of 'exact', where we allow placeholders '?_'
+for proof terms. Lean then creates subgoals corresponding to the proof terms we
+didn't provide.
 
 This works because elements of `M ⊗[F] N` are exactly finite sums of pure tensors.
 In both cases below (but especially the first), we see that Lean's automation (simp
