@@ -57,7 +57,7 @@ theorem add_assoc₂ : ∀ a b c : R, a + (b + c) = (a + b) + c := by
   -- this is now exactly associativity of the underlying additive group
   exact add_assoc a b c
 
--- Note that the proof below would not work if we hadn't labelled add_assoc₂ with simp
+-- Note that the proof below would not work if we hadn't tagged add_assoc₂ with simp
 theorem add_assoc₃ : ∀ a b c : R, a + (b + c) = (a + b) + c := by
   simp
 

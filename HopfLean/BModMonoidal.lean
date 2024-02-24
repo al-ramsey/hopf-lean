@@ -60,20 +60,24 @@ def Bmul : B ⊗[F] B →ₗ[F] M ⊗[F] N →ₗ[F] M ⊗[F] N :=
       -- (b₂ • _)⊗(b • _)`
       (fun b₁ b₂ b =>
         TensorProduct.ext' fun m n => by
-          simp only [BmulAux_apply, LinearMap.add_apply, add_mul, add_tmul, add_smul])
+          simp only [BmulAux_apply, LinearMap.add_apply, add_mul, add_tmul,
+            add_smul])
       -- `∀ (c : F) (b₁ b₂ : B) ((cb₁) • _ )⊗(b₂ • _) = c(b₁ • _)⊗(b₂ • _)`
       (fun c b₁ b₂ =>
         TensorProduct.ext' fun m n => by
-          simp only [BmulAux_apply, LinearMap.smul_apply, smul_tmul', smul_mul_assoc, smul_assoc])
+          simp only [BmulAux_apply, LinearMap.smul_apply, smul_tmul',
+            smul_mul_assoc, smul_assoc])
       -- `∀ (b b₁ b₂ : B) (b • _ )⊗((b₁ + b₂) • _) = (b • _)⊗(b₁ • _) +
       -- (b • _)⊗(b₂ • _)`
       (fun b b₁ b₂ =>
         TensorProduct.ext' fun m n => by
-          simp only [BmulAux_apply, LinearMap.add_apply, add_mul, tmul_add, add_smul])
+          simp only [BmulAux_apply, LinearMap.add_apply, add_mul, tmul_add,
+            add_smul])
       -- `∀ (c : F) (b₁ b₂ : B) (b₁ • _ )⊗((cb₂) • _) = c(b₁ • _)⊗(b₂ • _)`
       fun c b₁ b₂ =>
         TensorProduct.ext' fun m n => by
-          simp only [BmulAux_apply, LinearMap.smul_apply, smul_tmul, smul_tmul', smul_mul_assoc, smul_assoc]
+          simp only [BmulAux_apply, LinearMap.smul_apply, smul_tmul, smul_tmul',
+            smul_mul_assoc, smul_assoc]
 
 @[simp]
 theorem Bmul_apply (b₁ b₂ : B) (m : M) (n : N) :
@@ -109,12 +113,15 @@ theorem Bmul_one (a : M ⊗[F] N) : Bmul (1 : B ⊗[F] B) a = a := by
 
 -- `(x * y) • a = x • (y • a)`
 @[simp]
-theorem Bmul_mul (x y : B ⊗[F] B) (a : M ⊗[F] N) : Bmul (Algebra.TensorProduct.mul x y) a = Bmul x (Bmul y a) := by
+theorem Bmul_mul (x y : B ⊗[F] B) (a : M ⊗[F] N) :
+    Bmul (Algebra.TensorProduct.mul x y) a = Bmul x (Bmul y a) := by
   refine TensorProduct.induction_on a ?_ ?_ ?_; simp only [map_zero]
   · intros m n
-    refine TensorProduct.induction_on x ?_ ?_ ?_; simp only [map_zero, LinearMap.zero_apply]
+    refine TensorProduct.induction_on x ?_ ?_ ?_
+    simp only [map_zero, LinearMap.zero_apply]
     · intros b₁ b₂
-      refine TensorProduct.induction_on y ?_ ?_ ?_; simp only [map_zero, LinearMap.zero_apply]
+      refine TensorProduct.induction_on y ?_ ?_ ?_
+      simp only [map_zero, LinearMap.zero_apply]
       · intros b₃ b₄
         simp only [Algebra.TensorProduct.mul_apply, Bmul_apply, mul_smul]
       intros x y hyp₁ hyp₂; aesop
@@ -129,7 +136,8 @@ namespace ModuleCat
 
 variable {R : Type u₁} [CommRing R]
 variable {B : Type u₂} [Ring B] [Q : Bialgebra R B]
-variable (M N : ModuleCat B) [Module R M] [Module R N] [IsScalarTower R B M] [IsScalarTower R B N]
+variable (M N : ModuleCat B) [Module R M] [Module R N] [IsScalarTower R B M]
+  [IsScalarTower R B N]
 
 open TensorProduct
 
@@ -150,14 +158,16 @@ so that Lean can find it.
 @[default_instance 200]
 instance tprod_BModule : Module B (M ⊗[R] N) where
   smul := fun b ↦ (Bmul ∘ₗ Q.comul) b
-  -- Note that when proving one_smul and mul_smul, the simplifier needs Bmul_one and Bmul_mul,
-  -- which is why we proved them earlier.
+  /- Note that when proving one_smul and mul_smul, the simplifier needs Bmul_one and
+  Bmul_mul, which is why we proved them earlier. -/
   one_smul := by
     intros a; unfold instHSMul SMul.smul
-    simp only [LinearMap.coe_comp, Function.comp_apply, Bialgebra.comul_one, Bmul_one]
+    simp only [LinearMap.coe_comp, Function.comp_apply, Bialgebra.comul_one,
+      Bmul_one]
   mul_smul := by
     intros b₁ b₂ a; unfold instHSMul SMul.smul
-    simp only [LinearMap.coe_comp, Function.comp_apply, Bialgebra.comul_mul, Bmul_mul]
+    simp only [LinearMap.coe_comp, Function.comp_apply, Bialgebra.comul_mul,
+      Bmul_mul]
   smul_zero := by
     intros b; unfold instHSMul SMul.smul
     simp only [LinearMap.coe_comp, Function.comp_apply, map_zero]
@@ -166,7 +176,9 @@ instance tprod_BModule : Module B (M ⊗[R] N) where
     simp only [LinearMap.coe_comp, Function.comp_apply, map_add]
   add_smul := by
     intros b₁ b₂ a; unfold instHSMul SMul.smul
-    simp only [LinearMap.coe_comp, Function.comp_apply, map_add, LinearMap.add_apply]
+    simp only [LinearMap.coe_comp, Function.comp_apply, map_add,
+      LinearMap.add_apply]
   zero_smul := by
     intros a; unfold instHSMul SMul.smul
-    simp only [LinearMap.coe_comp, Function.comp_apply, map_zero, LinearMap.zero_apply]
+    simp only [LinearMap.coe_comp, Function.comp_apply, map_zero,
+      LinearMap.zero_apply]
