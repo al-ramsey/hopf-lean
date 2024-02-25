@@ -1,3 +1,4 @@
+-- import the file which defines rings from Mathlib
 import Mathlib.Algebra.Ring.Basic
 
 /-
