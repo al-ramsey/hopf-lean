@@ -5,7 +5,7 @@ Notation:
 * `V ⊗[R] W` is the tensor product of `V` and `W` over `R`, with elements finite
   sums of pure tensors `v ⊗ₜ[R] w`
 * `f : A →ₗ[R] B` is an `R`-linear map from `A` to `B`
-* `f : A →₀ B` is a finitely support function from `A` to `B`
+* `f : A →₀ B` is a finitely supported function from `A` to `B`
 * `fun₀ | x => 1` is the function which sends `x` to `1` and everything else to `0`
 
 -/
