@@ -101,11 +101,11 @@ def Finsupp''.Coalgebra (R : Type u) (S : Type v) [CommRing R] :
     (fun s ↦ Finsupp.single s 1 ⊗ₜ Finsupp.single s 1)
   counit := Finsupp.total S R R (fun _ ↦ 1)
   coassoc := by
-    intro b
+    intros b
     apply Finsupp.induction_linear b <;> aesop
   counit_id := by
-    intro b
+    intros b
     apply Finsupp.induction_linear b <;> aesop
   id_counit := by
-    intro b
+    intros b
     apply Finsupp.induction_linear b <;> aesop
