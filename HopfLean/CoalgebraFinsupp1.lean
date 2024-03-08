@@ -22,15 +22,24 @@ We use the canonical isomorphisms:
 * TensorProduct.lid R V : R ⊗ V ≅ V
 * TensorProduct.rid R V : V ⊗ R ≅ V
 -/
+
+/-- A coalgebra over a commutative ring `R` is an `R`-module equipped with a
+coassociative comultiplication and a counit obeying the left and right conunitality
+laws. -/
 class Coalgebra (R : Type u) (A : Type v) [CommRing R] [AddCommGroup A]
     [Module R A] where
+  /-- The comultiplication of the coalgebra -/
   comul : A →ₗ[R] A ⊗[R] A
+  /-- The counit of the coalgebra -/
   counit : A →ₗ[R] R
+  /-- The comultiplication is coassociative -/
   coassoc : ∀ a : A,
     (TensorProduct.assoc R A A A) ((TensorProduct.map comul id) (comul a)) =
     ((TensorProduct.map id comul) (comul a))
+  /-- The counit satisfies the left counitality law -/
   counit_id : ∀ a : A,
     (TensorProduct.lid R A) ((TensorProduct.map counit id) (comul a)) = a
+  /-- The counit satisfies the right counitality law -/
   id_counit : ∀ a : A,
     (TensorProduct.rid R A) ((TensorProduct.map id counit) (comul a)) = a
 

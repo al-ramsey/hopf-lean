@@ -27,7 +27,9 @@ variable [AddCommGroup N] [Module B N] [Module F N] [IsScalarTower F B N]
 -- Scalar multiplication by `B` is a linear map
 def leftActByB (b : B) : M →ₗ[F] M where
   toFun := (b • ·)
+  -- toFun preserves addition, since scalar multiplication does
   map_add' := smul_add b
+  -- toFun preserves scalar multiplication
   map_smul' := by intros r x; exact smul_algebra_smul_comm r b x
 
 -- Scalar multiplication by `B ⊗ B` on `M ⊗ N`, defined on pure tensors
@@ -60,22 +62,26 @@ def Bmul : B ⊗[F] B →ₗ[F] M ⊗[F] N →ₗ[F] M ⊗[F] N :=
       -- (b₂ • _)⊗(b • _)`
       (fun b₁ b₂ b =>
         TensorProduct.ext' fun m n => by
+          -- distributivity of *, ⊗, and • over addition
           simp only [BmulAux_apply, LinearMap.add_apply, add_mul, add_tmul,
             add_smul])
       -- `∀ (c : F) (b₁ b₂ : B) ((cb₁) • _ )⊗(b₂ • _) = c(b₁ • _)⊗(b₂ • _)`
       (fun c b₁ b₂ =>
         TensorProduct.ext' fun m n => by
+          -- associativity of •
           simp only [BmulAux_apply, LinearMap.smul_apply, smul_tmul',
             smul_mul_assoc, smul_assoc])
       -- `∀ (b b₁ b₂ : B) (b • _ )⊗((b₁ + b₂) • _) = (b • _)⊗(b₁ • _) +
       -- (b • _)⊗(b₂ • _)`
       (fun b b₁ b₂ =>
         TensorProduct.ext' fun m n => by
+          -- distributivity of *, ⊗, and • over addition
           simp only [BmulAux_apply, LinearMap.add_apply, add_mul, tmul_add,
             add_smul])
       -- `∀ (c : F) (b₁ b₂ : B) (b₁ • _ )⊗((cb₂) • _) = c(b₁ • _)⊗(b₂ • _)`
       fun c b₁ b₂ =>
         TensorProduct.ext' fun m n => by
+          -- associativity of •
           simp only [BmulAux_apply, LinearMap.smul_apply, smul_tmul, smul_tmul',
             smul_mul_assoc, smul_assoc]
 
@@ -108,6 +114,7 @@ didn't provide.
 -- `1 • a = a`
 @[simp]
 theorem Bmul_one (a : M ⊗[F] N) : Bmul (1 : B ⊗[F] B) a = a := by
+  -- the unit of `B ⊗ B` is `1 ⊗ 1`
   rw [Algebra.TensorProduct.one_def]
   refine TensorProduct.induction_on a ?_ ?_ ?_ <;> aesop
 
@@ -115,15 +122,22 @@ theorem Bmul_one (a : M ⊗[F] N) : Bmul (1 : B ⊗[F] B) a = a := by
 @[simp]
 theorem Bmul_mul (x y : B ⊗[F] B) (a : M ⊗[F] N) :
     Bmul (Algebra.TensorProduct.mul x y) a = Bmul x (Bmul y a) := by
+  -- induct on `a`, and note it is immediately true for `a = 0`
   refine TensorProduct.induction_on a ?_ ?_ ?_; simp only [map_zero]
   · intros m n
+    -- induct on `x`, and note it is immediately true for `x = 0`
     refine TensorProduct.induction_on x ?_ ?_ ?_
     simp only [map_zero, LinearMap.zero_apply]
     · intros b₁ b₂
+      -- induct on `y`, and note it is immediately true for `y = 0`
       refine TensorProduct.induction_on y ?_ ?_ ?_
       simp only [map_zero, LinearMap.zero_apply]
       · intros b₃ b₄
+        /- now we are only working with pure tensors, we apply the definitions of
+        multiplication and left action by `b`, along with associativity of •
+        and * -/
         simp only [Algebra.TensorProduct.mul_apply, Bmul_apply, mul_smul]
+      -- Lean's automation can deal with the remaining cases
       intros x y hyp₁ hyp₂; aesop
     intros x y hyp₁ hyp₂; aesop
   intros c d hyp₁ hyp₂; aesop
@@ -162,6 +176,12 @@ instance tprod_BModule : Module B (M ⊗[R] N) where
   Bmul_mul, which is why we proved them earlier. -/
   one_smul := by
     intros a; unfold instHSMul SMul.smul
+    /- 'LinearMap.coe_comp' says that for two linear maps `f` and `g`, we can either
+    compose them as linear maps and then look at the underlying function, or
+    compose the underlying functions of both, and the result is the same function.
+    This is a technical lemma needed by Lean, since it considers maps and linear
+    maps to technically be different types. The lemma 'Function.comp_apply' says
+    that (f ∘ g) (x) = f(g(x)). -/
     simp only [LinearMap.coe_comp, Function.comp_apply, Bialgebra.comul_one,
       Bmul_one]
   mul_smul := by

@@ -1,3 +1,8 @@
+-- lines beginning with '--' are shorter comments
+/-
+Longer comments can be enclosed in '/- -/' as demonstrated here.
+-/
+
 -- import the file which defines rings from Mathlib
 import Mathlib.Algebra.Ring.Basic
 
@@ -14,11 +19,12 @@ We first try to prove that addition in a ring is associative. Of course, this ju
 follows from the basic axioms for a ring, but trivial theorems like this are a good
 way to become familiar with Lean tactics.
 
-Our first proof uses 'intros', which when used on a goal of the form `∀ x, P x`,
-introduces an arbitrary variable `x` and changes the goal to `P x`.
+Our first proof uses 'intros', which when used on a goal of the form `∀ x, P x`
+(where `P x` is a proposition about `x`), introduces an arbitrary variable `x` and
+changes the goal to `P x`.
 
-Further, given a theorem `h` of the form `h : x = y` and a goal involving `x`, the
-tactic 'rw [h]' rewrites the goal to involve `y`.
+Further, given a theorem `h` of the form `h : x = y` and a goal `P x`, the tactic
+'rw [h]' rewrites the goal to `P y`.
 
 We have available the axiom that in an additive group, addition is associative:
 
@@ -47,7 +53,8 @@ on all equivalence relations.
 
 Tagging the theorem with the label @[simp] teaches the simplifier that the theorem
 is true. We can then later use the tactic 'simp', which tries to simplify the goal
-using the theorems it has been taught.
+using the theorems it has been taught. The simplifier in Mathlib knows a huge
+number of basic lemmas, not only the ones we teach it here.
 -/
 
 @[simp]
@@ -69,7 +76,7 @@ introduce the new tactics 'have', 'simp_rw', 'simp only' and 'apply'.
 
 The tactic 'have key : `P x`' creates a new subgoal `P x`. Once this has been
 proven, we would then have available 'key : `P x`' as a hypothesis, which we could
-use in the main proof. It is essentially introducing a lemma in the middle of a
+use in the main proof. It is analogous to introducing a lemma in the middle of a
 proof, and proving that first.
 
 If we have a theorem or hypothesis of the form 'h : `P → Q`' (`P` implies `Q`,
@@ -83,7 +90,11 @@ We will see below why one might choose to use 'simp_rw' over 'simp', and later (
 the section on monoidal categories) we will see why it can be better to use 'simp
 only' rather than 'simp'.
 
-We use the axioms of a ring in Mathlib below:
+We use the axioms of a ring in Mathlib below. Note that the arguments given in
+braces and square brackets can, for simplicity, be read as 'let `R` be a ring',
+although they are often more general; for example, the theorem 'right_distrib'
+only requires `R` to be a structure with a notion of multiplication, addition, and
+the property of right distributivity.
 
 right_distrib.{x} {R : Type x} [inst✝ : Mul R] [inst✝¹ : Add R]
     [inst✝² : RightDistribClass R] (a b c : R) : (a + b) * c = a * c + b * c
@@ -93,7 +104,8 @@ left_distrib.{x} {R : Type x} [inst✝ : Mul R] [inst✝¹ : Add R]
 
 mul_one.{u} {M : Type u} [inst✝ : MulOneClass M] (a : M) : a * 1 = a
 
-Along with the theorems that tell us we can left and right cancel:
+We also use with the theorems that tell us we can (additively) left and right
+cancel:
 
 AddGroup.toAddCancelMonoid.proof_6.{u_1} {G : Type u_1} [inst✝ : AddGroup G]
     (a b c : G) (h : a + b = c + b) : a = c

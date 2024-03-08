@@ -2,11 +2,11 @@ import Mathlib.RingTheory.TensorProduct
 
 /-!
 # Coalgebras
+
 In this file we define `Coalgebra`, and provide instances for:
+
 * Commutative semirings: `CommSemiring.toCoalgebra`
 * Finitely supported functions: `Finsupp.instCoalgebra`
-## References
-* <https://en.wikipedia.org/wiki/Coalgebra>
 -/
 
 suppress_compilation

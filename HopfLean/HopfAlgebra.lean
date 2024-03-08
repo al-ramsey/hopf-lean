@@ -6,10 +6,6 @@ import HopfLean.Bialgebra
 In this file we define `HopfAlgebra`, and provide instances for:
 
 * Commutative semirings: `CommSemiring.toHopfAlgebra`
-
-## References
-
-* <https://en.wikipedia.org/wiki/Hopf_algebra>
 -/
 
 suppress_compilation

@@ -12,10 +12,6 @@ import Mathlib.RingTheory.TensorProduct
 In this file we define `Bialgebra`, and provide instances for:
 
 * Commutative semirings: `CommSemiring.toBialgebra`
-
-## References
-
-* <https://en.wikipedia.org/wiki/Bialgebra>
 -/
 
 universe u v
