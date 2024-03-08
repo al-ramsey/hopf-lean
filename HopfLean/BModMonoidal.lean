@@ -104,7 +104,8 @@ a tensor product. For example, if our proposition is of the form
 
 This works because elements of `M ⊗[F] N` are exactly finite sums of pure tensors.
 In both cases below (but especially the first), we see that Lean's automation (simp
-and aesop) is very good at taking care of these partial goals.
+and aesop) is very good at taking care of these partial goals. The command '<;>
+aesop' tells Lean to repeat 'aesop' until it closes the goal.
 
 The tactic 'refine' is a generalisation of 'exact', where we allow placeholders '?_'
 for proof terms. Lean then creates subgoals corresponding to the proof terms we
