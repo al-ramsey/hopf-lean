@@ -66,6 +66,7 @@ def Bmul : B ⊗[F] B →ₗ[F] M ⊗[F] N →ₗ[F] M ⊗[F] N :=
       -- `∀ (b₁ b₂ b : B) ((b₁ + b₂) • _ )⊗(b • _) = (b₁ • _)⊗(b • _)
       -- + (b₂ • _)⊗(b • _)`
       (fun b₁ b₂ b =>
+        -- we prove these maps agree on all elements of M and N
         TensorProduct.ext' fun m n => by
           -- distributivity of *, ⊗, and • over addition
           simp only [BmulAux_apply, LinearMap.add_apply, add_mul,
