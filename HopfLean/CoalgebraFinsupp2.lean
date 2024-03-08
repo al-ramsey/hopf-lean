@@ -2,8 +2,9 @@ import Mathlib.RingTheory.TensorProduct
 
 /-
 Notation:
-* `f ∘ₗ g` is the composition `f ∘ g` of two linear maps `f` and `g`, as a linear map
-  (that is, it is a map, along with the proof that it is linear)
+* `f ∘ₗ g` is the composition `f ∘ g` of two linear maps `f` and `g`, as
+  a linear map (that is, it is a map, along with the proof that it is
+  linear)
 -/
 
 universe u v
@@ -14,10 +15,12 @@ class Coalgebra (R : Type u) (A : Type v) [CommRing R] [AddCommGroup A]
     [Module R A] where
   comul : A →ₗ[R] A ⊗[R] A
   counit : A →ₗ[R] R
-  coassoc : TensorProduct.assoc R A A A ∘ₗ TensorProduct.map comul .id ∘ₗ comul =
-    TensorProduct.map .id comul ∘ₗ comul
-  counit_id : TensorProduct.lid R A ∘ₗ TensorProduct.map counit .id ∘ₗ comul = .id
-  id_counit : TensorProduct.rid R A ∘ₗ TensorProduct.map .id counit ∘ₗ comul = .id
+  coassoc : TensorProduct.assoc R A A A ∘ₗ TensorProduct.map comul .id ∘ₗ
+    comul = TensorProduct.map .id comul ∘ₗ comul
+  counit_id : TensorProduct.lid R A ∘ₗ TensorProduct.map counit .id ∘ₗ
+    comul = .id
+  id_counit : TensorProduct.rid R A ∘ₗ TensorProduct.map .id counit ∘ₗ
+    comul = .id
 
 noncomputable
 def Finsupp.Coalgebra (R : Type u) (S : Type v) [CommRing R] :

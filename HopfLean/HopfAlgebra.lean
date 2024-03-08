@@ -12,11 +12,11 @@ suppress_compilation
 
 universe u v
 
-/-- A Hopf algebra over a commutative (semi)ring `R` is a bialgebra over `R`
-equipped with a linear map `S` (the antipode of the Hopf algebra) satisfying the
-antipode axioms. -/
-class HopfAlgebra (R : Type u) (A : Type v) [CommSemiring R] [Semiring A] extends
-    Bialgebra R A where
+/-- A Hopf algebra over a commutative (semi)ring `R` is a bialgebra
+over `R` equipped with a linear map `S` (the antipode of the Hopf
+algebra) satisfying the antipode axioms. -/
+class HopfAlgebra (R : Type u) (A : Type v) [CommSemiring R]
+    [Semiring A] extends Bialgebra R A where
   /-- The antipode of the Hopf algebra -/
   S : A →ₗ[R] A
   /-- The antipode axioms for a Hopf algebra -/
@@ -30,13 +30,13 @@ variable {R : Type u} {A : Type v}
 variable [CommSemiring R] [Semiring A] [H : HopfAlgebra R A]
 
 @[simp]
-theorem mSid_apply (a : A) : LinearMap.mul' R A (S.rTensor A (H.comul a)) =
-    Algebra.linearMap R A (H.counit a) :=
+theorem mSid_apply (a : A) : LinearMap.mul' R A
+    (S.rTensor A (H.comul a)) = Algebra.linearMap R A (H.counit a) :=
   LinearMap.congr_fun mSid a
 
 @[simp]
-theorem midS_apply (a : A) : LinearMap.mul' R A (S.lTensor A (H.comul a)) =
-    Algebra.linearMap R A (H.counit a) :=
+theorem midS_apply (a : A) : LinearMap.mul' R A
+    (S.lTensor A (H.comul a)) = Algebra.linearMap R A (H.counit a) :=
   LinearMap.congr_fun midS a
 
 end HopfAlgebra

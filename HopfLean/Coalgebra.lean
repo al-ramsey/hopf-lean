@@ -15,11 +15,11 @@ universe u v
 
 open scoped TensorProduct
 
-/-- A coalgebra over a commutative (semi)ring `R` is an `R`-module equipped with a
-coassociative comultiplication `Δ` and a counit `ε` obeying the left and right
-conunitality laws. -/
-class Coalgebra (R : Type u) (A : Type v) [CommSemiring R] [AddCommMonoid A]
-    [Module R A] where
+/-- A coalgebra over a commutative (semi)ring `R` is an `R`-module
+equipped with a coassociative comultiplication `Δ` and a counit `ε`
+obeying the left and right conunitality laws. -/
+class Coalgebra (R : Type u) (A : Type v) [CommSemiring R]
+    [AddCommMonoid A] [Module R A] where
   /-- The comultiplication of the coalgebra -/
   comul : A →ₗ[R] A ⊗[R] A
   /-- The counit of the coalgebra -/
@@ -28,7 +28,8 @@ class Coalgebra (R : Type u) (A : Type v) [CommSemiring R] [AddCommMonoid A]
   coassoc : TensorProduct.assoc R A A A ∘ₗ comul.rTensor A ∘ₗ comul =
     comul.lTensor A ∘ₗ comul
   /-- The counit satisfies the left counitality law -/
-  rTensor_counit_comp_comul : counit.rTensor A ∘ₗ comul = TensorProduct.mk R _ _ 1
+  rTensor_counit_comp_comul : counit.rTensor A ∘ₗ comul =
+    TensorProduct.mk R _ _ 1
   /-- The counit satisfies the right counitality law -/
   lTensor_counit_comp_comul : counit.lTensor A ∘ₗ comul =
     (TensorProduct.mk R _ _).flip 1
@@ -56,11 +57,13 @@ theorem coassoc_symm :
   LinearMap.ext coassoc_symm_apply
 
 @[simp]
-theorem rTensor_counit_comul (a : A) : counit.rTensor A (comul a) = 1 ⊗ₜ[R] a :=
+theorem rTensor_counit_comul (a : A) : counit.rTensor A (comul a) =
+    1 ⊗ₜ[R] a :=
   LinearMap.congr_fun rTensor_counit_comp_comul a
 
 @[simp]
-theorem lTensor_counit_comul (a : A) : counit.lTensor A (comul a) = a ⊗ₜ[R] 1 :=
+theorem lTensor_counit_comul (a : A) : counit.lTensor A (comul a) =
+    a ⊗ₜ[R] 1 :=
   LinearMap.congr_fun lTensor_counit_comp_comul a
 
 end Coalgebra
@@ -71,7 +74,8 @@ open Coalgebra
 
 namespace CommSemiring
 
-/-- Every commutative (semi)ring is a coalgebra over itself, with `Δ r = 1 ⊗ₜ r`.-/
+/-- Every commutative (semi)ring is a coalgebra over itself, with
+`Δ r = 1 ⊗ₜ r`.-/
 instance toCoalgebra : Coalgebra R R where
   comul := (TensorProduct.mk R R R) 1
   counit := .id
@@ -90,10 +94,11 @@ end CommSemiring
 namespace Finsupp
 variable (ι : Type v)
 
-/-- The `R`-module whose elements are functions `ι → R` which are zero on all but
-finitely many elements of `ι` has a coalgebra structure. The coproduct `Δ` is given
-by `Δ(fᵢ) = fᵢ ⊗ fᵢ` and the counit `ε` by `ε(fᵢ) =  1`, where `fᵢ` is the
-function sending `i` to `1` and all other elements of `ι` to zero. -/
+/-- The `R`-module whose elements are functions `ι → R` which are zero
+on all but finitely many elements of `ι` has a coalgebra structure. The
+coproduct `Δ` is given by `Δ(fᵢ) = fᵢ ⊗ fᵢ` and the counit `ε` by
+`ε(fᵢ) =  1`, where `fᵢ` is the function sending `i` to `1` and all
+other elements of `ι` to zero. -/
 noncomputable
 instance instCoalgebra : Coalgebra R (ι →₀ R) where
   comul := Finsupp.total ι ((ι →₀ R) ⊗[R] (ι →₀ R)) R
@@ -110,7 +115,8 @@ theorem comul_single (i : ι) (r : R) : comul (Finsupp.single i r) =
   rw [total_single, TensorProduct.smul_tmul', smul_single_one i r]
 
 @[simp]
-theorem counit_single (i : ι) (r : R) : counit (Finsupp.single i r) = r := by
+theorem counit_single (i : ι) (r : R) : counit (Finsupp.single i r) =
+    r := by
   unfold counit instCoalgebra; simp
 
 end Finsupp
